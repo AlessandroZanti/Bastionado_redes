@@ -1,0 +1,8 @@
+#!/bin/bash
+# Crea una tuberia para netcat
+echo "NetCat Server in 127.0.0.1 1234 running." 
+ trap "rm -f /tmp/f; echo '    NetCat Server in 127.0.0.1 closed.'" EXIT
+ 
+ mkfifo /tmp/f 
+ cat /tmp/f | /usr/local/JSBach/systems/scr_cli 2>&1 | nc -lk 127.0.0.1 1234 > /tmp/f
+

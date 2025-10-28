@@ -1,0 +1,38 @@
+#!/bin/bash
+# Interprete que ejecuta comandos de /usr/local/JSBach/scripts/ifwan
+
+SCRIPTS_DIR="/usr/local/JSBach/scripts"
+
+while true; do
+    # Usamos solo read -p (sin echo -n) para un único prompt
+    read -rp "CLI-A> " input_line
+
+    # Comprobar si el usuario quiere salir
+    if [ "$input_line" = "exit" ]; then
+        echo "Exiting..."
+        break
+    fi
+
+    # Separar la línea en array de argumentos
+    read -a args <<< "$input_line"
+
+    # Si no hay argumentos, seguir
+    if [ ${#args[@]} -lt 1 ]; then
+        continue
+    fi
+
+    SCRIPT_NAME="${args[0]}"
+    SCRIPT_PATH="$SCRIPTS_DIR/$SCRIPT_NAME"
+
+    SCRIPT_ARGS=("${args[@]:1}")
+
+    # Comprobar que existe y es ejecutable
+    if [ ! -x "$SCRIPT_PATH" ]; then
+        echo "Error: El script '$SCRIPT_NAME' no existe o no es executable a $SCRIPTS_DIR."
+        continue
+    fi
+
+    # Ejecutar el script con los argumentos
+    "$SCRIPT_PATH" "${SCRIPT_ARGS[@]}"
+done
+

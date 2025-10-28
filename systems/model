@@ -1,0 +1,68 @@
+#!/bin/bash
+
+source /usr/local/JSBach/conf/ifwan.txt
+
+######################################################################
+###  Funcions
+######################################################################
+
+fnc_iniciar()
+{
+	echo "Iniciar"	
+}
+
+fnc_aturar()
+{
+	echo "Aturar"
+}
+
+
+fnc_configurar()
+{	
+	
+	echo "Configuracio guardada"
+}
+
+
+fnc_estat()
+{
+	 echo "ACTIVAT"
+	 echo "DESACTIVAT"	    
+}
+
+
+######################################################################
+###  MAIN
+######################################################################
+
+MSG="falta [iniciar, aturar, configurar ,estat]"
+
+# Comprovem que hi hagi almenys un argument (la opció)
+if [ $# -lt 1 ]; then
+  echo "$MSG"
+  exit 1
+fi
+
+OPCIO_1=$1
+shift
+
+# Fem switch per executar la funció que toca
+case "$OPCIO_1" in
+  iniciar)
+    fnc_iniciar  $@
+    ;;
+  aturar)
+    fnc_aturar	$@
+    ;; 
+  configurar) 
+    fnc_configurar $@
+    ;;
+  estat) 
+    fnc_estat $@
+    ;;
+  *)
+    echo "$MSG"
+    ;;
+esac
+
+

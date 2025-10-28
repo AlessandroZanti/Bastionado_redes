@@ -1,0 +1,17 @@
+#!/bin/bash
+
+###
+
+echo "Desactivar NetworkManager"
+
+systemctl stop NetworkManager 
+systemctl disable NetworkManager
+
+sudo apt update
+
+sudo apt install -y apache2
+sudo apt install -y net-tools
+sudo apt install -y curl
+sudo apt isntall -y expect
+
+sudo apt upgrade
