@@ -1,0 +1,40 @@
+#!/bin/bash
+# /usr/local/JSBach/scripts/client_srv_cli
+# Envía un comando al srv_cli (127.0.0.1:1234) y muestra la respuesta.
+# Uso:
+#   client_srv_cli ifwan iniciar
+#   echo "ifwan status" | client_srv_cli
+
+set -eu
+
+HOST="127.0.0.1"
+PORT="1234"
+NC="$(command -v nc || command -v ncat || true)"
+
+if [ -z "$NC" ]; then
+  echo "ERROR: nc / ncat no encontrado" >&2
+  exit 2
+fi
+
+# Si hay argumentos, únelos en un solo comando; si no, lee stdin
+if [ $# -gt 0 ]; then
+  cmd="$*"
+else
+  # lee todo stdin
+  cmd="$(cat -)"
+fi
+
+# Si la línea está vacía, salimos
+if [ -z "${cmd//[[:space:]]/}" ]; then
+  echo "ERROR: comando vacío" >&2
+  exit 3
+fi
+
+# Enviar y mostrar respuesta. Usamos -w para timeout (nc) o --recv-only/--send-only si ncat
+# Intentamos una forma compatible para nc/ncat
+if command -v nc >/dev/null 2>&1; then
+  printf '%s\n' "$cmd" | nc -w 4 "$HOST" "$PORT"
+else
+  # ncat (ncat --recv-only no es portable), usar -w si soportado
+  printf '%s\n' "$cmd" | ncat --recv-only --send-only --idle-timeout 4 "$HOST" "$PORT"
+fi

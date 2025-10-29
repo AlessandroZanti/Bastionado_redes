@@ -1,0 +1,152 @@
+#!/bin/bash
+
+source /usr/local/JSBach/conf/ifwan.conf
+
+##########################################################################
+###  FUNCTIONS
+##########################################################################
+fnc_autor(){
+ echo "                       _"
+ echo "                     ('v')"
+ echo "                    //-=-\\ "
+ echo "                    (== ==)"
+ echo "                     ^^ ^^"
+ echo "###############################################"
+ echo "########## ALESSANDRO ZANTI ALCALÁ ############"
+ echo "###############################################"
+}
+
+
+fnc_parar(){
+    echo $MODE
+    case "$MODE" in
+    "dhcp")
+        dhcpcd -k $IFWAN
+         sudo systemctl stop NetworkManager 2>/dev/null
+         sudo systemctl disable NetworkManager 2>/dev/null
+         #echo "NetworkManager detenido y deshabilitado."
+         sudo systemctl status NetworkManager
+         echo DHCP parado
+         ;;
+    "manual")
+        echo MANUEL parado
+        ip a d $IP/$MASC dev $IFWAN
+        ip l s dev $IFWAN down
+        ;;
+    esac
+}
+
+fnc_configurar(){
+    (
+    echo MODE=$1
+    echo IFWAN=$2
+    echo IP=$( echo $3 | cut -d'/' -f1)
+    echo MASC=$( echo $3 | cut -d'/' -f2)
+    echo PE=$4
+    echo S_DNS=$5
+    ) > /usr/local/JSBach/conf/ifwan.conf
+
+     if [ $# -lt 1 ]; then 
+        echo "Falta modo: [dhcp/manual]"
+        exit 1
+    fi
+
+    shift
+
+    if [ $# -lt 1 ]; then
+        echo "[Falta interfaz]"
+        exit 1
+    fi
+}
+
+fnc_iniciar() {
+    if [ "$MODE" == "dhcp" ]; then
+        dhcpcd "$IFWAN"
+        return 0
+    fi
+ 
+    if [ "$MODE" == "manual" ]; then
+        ip a a $IP/$MASC dev $IFWAN
+        ip l s dev $IFWAN up  
+        ip r a defualt via $PE
+        if grep "#DNS=" /etc/systemd/resolved.conf; then 
+             sed -i 's/#DNS=*/DNS='$S_DNS'/g' /etc/systemd/resolved.conf
+        fi
+
+        if ! grep "DNS=$S_DNS" /etc/systemd/resolved.conf; then   
+            sed -i 's/^DNS=.*/DNS='$S_DNS'/g' /etc/systemd/resolved.conf
+        fi
+    return 0
+    exit 1
+    fi
+
+    if [ $# -lt 1 ]; then
+        echo "falta el modo : manual o dhcpcd"
+        exit 1
+    fi
+    return 0
+    echo "Modo no soportado: echo $MODE"
+    exit 1
+}
+
+fnc_estado(){
+    if wget -q --spider http://google.com; then
+        echo "Conectado a INTERNET"
+    else
+        echo "NO conectado a INTERNET"
+    fi
+}
+fnc_modificar_fichero(){
+    fichero=$1
+    linea=$2
+    nuevo=$3
+}
+
+##########################################################################
+###  MAIN
+##########################################################################
+
+MSG="[Parar/Iniciar/Configurar]"
+
+if [ $# -lt 1 ]; then
+    echo "$MSG"
+    exit 1
+fi
+
+option_1=$1
+shift
+
+case "$option_1" in
+    parar)
+        fnc_autor "$@"
+        fnc_parar "$@"
+    ;;
+    configurar)
+        fnc_autor "$@"
+        fnc_configurar "$@"
+    ;;
+    iniciar)
+        fnc_autor "$@"
+        fnc_iniciar "$@"
+        fnc_estado "$@"
+    ;;
+    estado)
+        fnc_autor "$@"
+        fnc_estado "$@"
+    ;;
+    autor)
+        fnc_autor "$@"
+    ;;
+    *)
+        echo "$MSG"
+    ;;
+esac
+
+#   _
+# ('v')
+#//-=-\
+#(== ==)
+# ^^ ^^
+ ###############################################
+ ########### ALESSANDRO ZANTI ALCALA ############
+ ###############################################
