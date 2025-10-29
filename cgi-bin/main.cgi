@@ -6,7 +6,7 @@ import os, sys, html, socket, urllib.parse, re, subprocess
 
 HOST = "127.0.0.1"
 PORT = 1234
-SO_TIMEOUT = 4  # segundos
+SO_TIMEOUT = 6  # 4 segundos
 
 CLIENT_PATH = "/usr/local/JSBach/scripts/client_srv_cli"
 
@@ -83,7 +83,7 @@ print(f"""<!doctype html>
 <html>
 <head>
 <meta charset='utf-8'>
-<title>JSBach Network Control</title>
+<title>Network Control</title>
 <style>
 body {{
     margin: 0;
@@ -226,22 +226,22 @@ function activarBoton(btn, tipo) {{
 <div class="menu-btn" onclick="toggleMenu()">☰</div>
 
 <div class="sidebar">
-    <a href="#" data-id="wan" class="{'active' if menu=='wan' else ''}" onclick="mostrarSeccion('wan')">Menú WAN</a>
-    <a href="#" data-id="enrutar" class="{'active' if menu=='enrutar' else ''}" onclick="mostrarSeccion('enrutar')">Menú Enrutar</a>
+    <a href="#" data-id="wan" class="{'active' if menu=='wan' else ''}" onclick="mostrarSeccion('wan')">WAN</a>
+    <a href="#" data-id="enrutar" class="{'active' if menu=='enrutar' else ''}" onclick="mostrarSeccion('enrutar')">Routing</a>
 </div>
 
 <div class="main">
 
   <div id="wan" class="section {'active' if menu=='wan' else ''}">
     <div class="panel">
-      <h1>Gestión WAN</h1>
+      <h1>WAN</h1>
       <form method="post" action="/cgi-bin/main.cgi">
         <input type="hidden" name="menu" value="wan">
 
         <div id="wanButtons" class="row">
           <button type="submit" name="action" value="iniciar" onclick="activarBoton(this, 'iniciar')">Enable</button>
-          <button type="button" onclick="activarBoton(this, 'configurar')">Configurar</button>
-          <button type="submit" name="action" value="parar" onclick="activarBoton(this, 'parar')">Parar</button>
+          <button type="button" onclick="activarBoton(this, 'configurar')">Configure</button>
+          <button type="submit" name="action" value="parar" onclick="activarBoton(this, 'parar')">Stop</button>
         </div>
 
         <div class="config-opciones">
@@ -259,18 +259,18 @@ function activarBoton(btn, tipo) {{
       </form>
     </div>
 
-    {"<div class='sep'></div><div class='panel'><h3>Comando enviado</h3><pre>" + html.escape(cmd_to_send or '') + "</pre><h4>Salida del servicio:</h4><pre>" + html.escape(send_to_srv_cli(cmd_to_send)) + "</pre></div>" if action else ""}
+    {"<div class='sep'></div><div class='panel'><h3>Script</h3><pre>" + html.escape(cmd_to_send or '') + "</pre><h4>CLI</h4><pre>" + html.escape(send_to_srv_cli(cmd_to_send)) + "</pre></div>" if action else ""}
   </div>
 
   <div id="enrutar" class="section {'active' if menu=='enrutar' else ''}">
     <div class="panel">
-      <h1>Menú Enrutar</h1>
-      <button>Botón</button>
+      <h1>Routing</h1>
+      <button>Button 1</button>
     </div>
   </div>
 
   <div class="footer">
-    JSBach Web Control • CGI seguro (localhost 127.0.0.1)
+    Network Control Web • Secured CGI (localhost 127.0.0.1)
   </div>
 
 </div>
