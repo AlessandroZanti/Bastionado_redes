@@ -6,7 +6,7 @@ import os, sys, html, socket, urllib.parse, re, subprocess
 
 HOST = "127.0.0.1"
 PORT = 1234
-SO_TIMEOUT = 6  # 4 segundos
+SO_TIMEOUT = 4  # 4 segundos
 
 CLIENT_PATH = "/usr/local/JSBach/scripts/client_srv_cli"
 
@@ -270,7 +270,7 @@ function activarBoton(btn, tipo) {{
   </div>
 
   <div class="footer">
-    Network Control Web • Secured CGI (localhost 127.0.0.1)
+    Net Control Web • Secured CGI (localhost 127.0.0.1)
   </div>
 
 </div>
