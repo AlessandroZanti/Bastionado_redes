@@ -18,10 +18,10 @@ fnc_autor(){
 
 
 fnc_parar(){
-    echo $MODE
-    case "$MODE" in
+    echo $IFW_MODE
+    case "$IFW_MODE" in
     "dhcp")
-        dhcpcd -k $IFWAN
+        dhcpcd -k $IFW_DEV
          sudo systemctl stop NetworkManager 2>/dev/null
          sudo systemctl disable NetworkManager 2>/dev/null
          #echo "NetworkManager detenido y deshabilitado."
@@ -30,20 +30,20 @@ fnc_parar(){
          ;;
     "manual")
         echo MANUEL parado
-        ip a d $IP/$MASC dev $IFWAN
-        ip l s dev $IFWAN down
+        ip a d $IFW_IP/$IFW_MASC dev $IFW_DEV
+        ip l s dev $IFW_DEV down
         ;;
     esac
 }
 
 fnc_configurar(){
     (
-    echo MODE=$1
-    echo IFWAN=$2
-    echo IP=$( echo $3 | cut -d'/' -f1)
-    echo MASC=$( echo $3 | cut -d'/' -f2)
-    echo PE=$4
-    echo S_DNS=$5
+    echo IFW_MODE=$1
+    echo IFW_DEV=$2
+    echo IFW_IP=$( echo $3 | cut -d'/' -f1)
+    echo IFW_MASC=$( echo $3 | cut -d'/' -f2)
+    echo IFW_PE=$4
+    echo IFW_S_DNS=$5
     ) > /usr/local/JSBach/conf/ifwan.conf
 
      if [ $# -lt 1 ]; then 
@@ -60,21 +60,21 @@ fnc_configurar(){
 }
 
 fnc_iniciar() {
-    if [ "$MODE" == "dhcp" ]; then
-        dhcpcd "$IFWAN"
+    if [ "$IFW_MODE" == "dhcp" ]; then
+        dhcpcd "$IFW_DEV"
         return 0
     fi
  
-    if [ "$MODE" == "manual" ]; then
-        ip a a $IP/$MASC dev $IFWAN
-        ip l s dev $IFWAN up  
-        ip r a defualt via $PE
+    if [ "$IFW_MODE" == "manual" ]; then
+        ip a a $IFW_IP/$IFW_MASC dev $IFW_DEV
+        ip l s dev $IFW_DEV up  
+        ip r a defualt via $IFW_PE
         if grep "#DNS=" /etc/systemd/resolved.conf; then 
-             sed -i 's/#DNS=*/DNS='$S_DNS'/g' /etc/systemd/resolved.conf
+             sed -i 's/#DNS=*/DNS='$IFW_S_DNS'/g' /etc/systemd/resolved.conf
         fi
 
-        if ! grep "DNS=$S_DNS" /etc/systemd/resolved.conf; then   
-            sed -i 's/^DNS=.*/DNS='$S_DNS'/g' /etc/systemd/resolved.conf
+        if ! grep "DNS=$IFW_S_DNS" /etc/systemd/resolved.conf; then   
+            sed -i 's/^DNS=.*/DNS='$IFW_S_DNS'/g' /etc/systemd/resolved.conf
         fi
     return 0
     exit 1
@@ -85,7 +85,7 @@ fnc_iniciar() {
         exit 1
     fi
     return 0
-    echo "Modo no soportado: echo $MODE"
+    echo "Modo no soportado: echo $IFW_MODE"
     exit 1
 }
 
