@@ -68,7 +68,7 @@ fnc_iniciar() {
     if [ "$IFW_MODE" == "manual" ]; then
         ip a a $IFW_IP/$IFW_MASC dev $IFW_DEV
         ip l s dev $IFW_DEV up  
-        ip r a defualt via $IFW_PE
+        ip r a default via $IFW_PE
         if grep "#DNS=" /etc/systemd/resolved.conf; then 
              sed -i 's/#DNS=*/DNS='$IFW_S_DNS'/g' /etc/systemd/resolved.conf
         fi
