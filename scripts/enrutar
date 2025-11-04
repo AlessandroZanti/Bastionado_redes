@@ -18,16 +18,27 @@ fnc_autor(){
  echo "###############################################"
 }
 
-fnc_iniciar()
-{
+
+fnc_iniciar(){
 	echo "Iniciar"	
 	echo 1 > /proc/sys/net/ipv4/ip_forward
 	iptables -t nat -A POSTROUTING -o $ENR_DEV -j MASQUERADE
 	
 }
 
-fnc_parar()
-{
+fnc_configurar(){
+  (
+    echo ENR_DEV=$1
+  ) > /usr/local/JSBach/conf/enrutar.conf
+
+if [ $# -lt 1 ]; then
+  echo "Falta [Device]"
+  exit 1
+fi
+
+}
+
+fnc_parar(){
 	echo "Parar"
 	echo 0 > /proc/sys/net/ipv4/ip_forward
 	iptables -t nat -D POSTROUTING -o $ENR_DEV -j MASQUERADE
@@ -57,6 +68,7 @@ if [ $# -lt 1 ]; then
   exit 1
 fi
 
+
 OPCIO_1=$1
 shift
 
@@ -65,6 +77,10 @@ case "$OPCIO_1" in
   iniciar)
     fnc_autor  $@
     fnc_iniciar  $@
+    ;;
+  configurar)
+    fnc_autor $@
+    fnc_configurar $@
     ;;
   parar)
     fnc_autor  $@
