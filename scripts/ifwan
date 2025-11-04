@@ -54,7 +54,28 @@ fnc_configurar(){
     shift
 
     if [ $# -lt 1 ]; then
-        echo "[Falta interfaz]"
+        echo "Falta [Device]"
+        exit 1
+    fi
+
+    shift 
+
+     if [ $# -lt 1 ]; then
+        echo "Falta [IP/Mascara]"
+        exit 1
+    fi
+
+    shift 
+    
+     if [ $# -lt 1 ]; then
+        echo "Falta [Gateway]"
+        exit 1
+    fi
+
+    shift 
+    
+     if [ $# -lt 1 ]; then
+        echo "Falta [DNS]"
         exit 1
     fi
 }
