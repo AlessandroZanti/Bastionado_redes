@@ -35,7 +35,6 @@ fnc_parar(){
         ;;
     esac
 }
-
 fnc_configurar(){
     (
     echo IFW_MODE=$1
@@ -46,36 +45,47 @@ fnc_configurar(){
     echo IFW_S_DNS=$5
     ) > /usr/local/JSBach/conf/ifwan.conf
 
-     if [ $# -lt 1 ]; then 
+    if [ $# -lt 1 ]; then 
         echo "Falta modo: [dhcp/manual]"
         exit 1
     fi
 
+    if [ "$1" = "dhcp" ]; then
+        if [ $# -lt 2 ]; then
+            echo "Falta [Device]"
+            exit 1
+        fi
+        echo "Configurado modo DHCP para interfaz $2"
+        return
+    fi
     shift
 
     if [ $# -lt 1 ]; then
         echo "Falta [Device]"
         exit 1
     fi
-
     shift 
 
-     if [ $# -lt 1 ]; then
+    if [ $# -lt 1 ]; then
         echo "Falta [IP/Mascara]"
         exit 1
     fi
-
     shift 
     
-     if [ $# -lt 1 ]; then
+    if [ $# -lt 1 ]; then
         echo "Falta [Gateway]"
         exit 1
     fi
-
     shift 
     
-     if [ $# -lt 1 ]; then
+    if [ $# -lt 1 ]; then
         echo "Falta [DNS]"
+        exit 1
+    fi
+    shift
+    
+     if [ $# -lt 1 ]; then
+        echo "Configurado modo Manual para interfaz $IFW_DEV"
         exit 1
     fi
 }
@@ -117,6 +127,7 @@ fnc_estado(){
         echo "NO conectado a INTERNET"
     fi
 }
+
 fnc_modificar_fichero(){
     fichero=$1
     linea=$2
