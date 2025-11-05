@@ -22,19 +22,19 @@ fnc_parar(){
     case "$IFW_MODE" in
     "dhcp")
         dhcpcd -k $IFW_DEV
-         sudo systemctl stop NetworkManager 2>/dev/null
-         sudo systemctl disable NetworkManager 2>/dev/null
-         #echo "NetworkManager detenido y deshabilitado."
-         sudo systemctl status NetworkManager
-         echo DHCP parado
-         ;;
+        sudo systemctl stop NetworkManager 2>/dev/null
+        sudo systemctl disable NetworkManager 2>/dev/null
+        sudo systemctl status NetworkManager --no-pager
+        echo "DHCP parado"
+        ;;
     "manual")
-        echo MANUEL parado
+        echo "MANUAL parado"
         ip a d $IFW_IP/$IFW_MASC dev $IFW_DEV
         ip l s dev $IFW_DEV down
         ;;
     esac
 }
+
 fnc_configurar(){
     (
     echo IFW_MODE=$1
@@ -121,12 +121,13 @@ fnc_iniciar() {
 }
 
 fnc_estado(){
-    if wget -q --spider http://google.com; then
+    if curl -s --max-time 3 --head http://example.com >/dev/null; then
         echo "Conectado a INTERNET"
     else
         echo "NO conectado a INTERNET"
     fi
 }
+
 
 fnc_modificar_fichero(){
     fichero=$1
