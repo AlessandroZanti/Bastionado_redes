@@ -1,9 +1,5 @@
 #!/bin/bash
 
-#source /usr/local/JSBach/conf/variables.conf
-
-#source /usr/local/JSBach/conf/bridge.conf
-
 fnc_iniciar(){
     echo "iniciar"
     ##Falta estado bridge por iniciar si ya esta funcionando
@@ -16,11 +12,24 @@ fnc_iniciar(){
         VLANIP=$(echo "$LINIA"|cut -d';'  -f4)
         ip l a l br0 name br0.$VLANID type vlan id $VLANID
         ip l s dev br0.$VLANID up
+        ip a a dev br0.$VLANID $VLANIP
     done
 
-    for LINIA in $(cat "/usr/local/JSbach/conf/bridge_if.conf" | grep -v '^#'); do
+    for LINIA in $(cat "/usr/local/JSBach/conf/bridge_if.conf" | grep -v '^#'); do
+        NOMBRE_IF=$(echo "$LINIA" | cut -d ';' -f1)
+        VLAN_UNTAG=$(echo "$LINIA" | cut -d ';' -f2)
+        VLAN_TAG=$(echo "$LINIA" | cut -d ';' -f3)
+        ip l s dev $NOMBRE_IF master br0
+        if [ ! -z $VLAN_UNTAG ]; then
+            bridge vlan add dev $VLAN_IF vid $VLAN_UNTAG pvid untagged
+        fi
 
-    done
+        if [ ! -z $VLAN_TAG ]; then
+            for CAMP in ${VLAN_TAG//,/ }; do 
+                bridge vlan add dev $VLAN_IF vid $VLAN_TAG
+            done
+        fi
+    done    
 }
 
 fnc_parar(){
