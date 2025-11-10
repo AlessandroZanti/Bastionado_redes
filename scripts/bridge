@@ -1,0 +1,71 @@
+#!/bin/bash
+
+#source /usr/local/JSBach/conf/variables.conf
+
+#source /usr/local/JSBach/conf/bridge.conf
+
+fnc_iniciar(){
+    echo "iniciar"
+    ##Falta estado bridge por iniciar si ya esta funcionando
+    ## Crear bridge parte interna
+    ip l a name br0 type bridge vlan_filtering 1
+    ip l s dev br0 up
+
+    for LINIA in $(cat "/usr/local/JSBach/conf/bridge.conf" | grep -v '^#'); do
+        VLANID=$(echo "$LINIA"|cut -d';'  -f2)
+        VLANIP=$(echo "$LINIA"|cut -d';'  -f4)
+        ip l a l br0 name br0.$VLANID type vlan id $VLANID
+        ip l s dev br0.$VLANID up
+    done
+
+    for LINIA in $(cat "/usr/local/JSbach/conf/bridge_if.conf" | grep -v '^#'); do
+
+    done
+}
+
+fnc_parar(){
+    echo "parar"
+    ip l d dev br0
+}
+
+fnc_configurar(){
+    echo "config"
+}
+fnc_estado(){
+    echo "estado"
+}
+
+######################################################################
+###  MAIN
+######################################################################
+
+MSG="falta [iniciar, aturar, configurar ,estat]"
+
+# Comprovem que hi hagi almenys un argument (la opció)
+if [ $# -lt 1 ]; then
+  echo "$MSG"
+  exit 1
+fi
+
+OPCIO_1=$1
+shift
+
+# Fem switch per executar la funció que toca
+case "$OPCIO_1" in
+  iniciar)
+    fnc_iniciar  $@
+    ;;
+  parar)
+    fnc_parar	$@
+    ;; 
+  configurar) 
+    fnc_configurar $@
+    ;;
+  estat) 
+    fnc_estat $@
+    ;;
+  *)
+    echo "$MSG"
+    ;;
+esac
+
