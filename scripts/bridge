@@ -24,15 +24,15 @@ fnc_iniciar(){
         VLAN_UNTAG=$(echo "$LINIA" | cut -d ';' -f2)
         VLAN_TAG=$(echo "$LINIA" | cut -d ';' -f3)
         ip l s dev $NOMBRE_IF master br0
-        bridge vlan del dev $NOM_IF vid 1 pvid untagged
-        #bridge vlan del dev $NOM_IF type vlan id $VLANID
+        bridge vlan del dev $NOMBRE_IF vid 1 pvid untagged
+        #bridge vlan del dev $NOMBRE_IF type vlan id $VLANID
         if [ ! -z $VLAN_UNTAG ]; then
-            bridge vlan add dev $NOM_IF vid $VLAN_UNTAG pvid untagged
+            bridge vlan add dev $NOMBRE_IF vid $VLAN_UNTAG pvid untagged
             bridge vlan add dev br0 vid $VLAN_UNTAG self
         fi
         if [ ! -z $VLAN_TAG ]; then
             for CAMP in ${VLAN_TAG//,/ }; do 
-                bridge vlan add dev $NOM_IF vid $CAMP
+                bridge vlan add dev $NOMBRE_IF vid $CAMP
                 bridge vlan add dev br0 vid $CAMP self
             done
         fi
@@ -65,7 +65,7 @@ fnc_configurar(){
       guardar) 
         # --- Comprobación del tipo (vlan o bridge) ---
         if [ -z "$1" ]; then
-          echo "Falta tipo [ Vlan/Bridge ]"
+          echo "Falta tipo [ Vlan/Bridge/bridge_if ]"
           exit 1
         fi
         OPCIO_2=$1
@@ -83,20 +83,48 @@ fnc_configurar(){
               exit 1
             fi
             if [ -z "$3" ]; then
-              echo "Falta: [ IP/MASC ]"
+              echo "Falta: [ VLAN IP/MASC ]"
               exit 1
             fi
             if [ -z "$4" ]; then
-              echo "Falta [ IP/MASC Dev ]"
+              echo "Falta [ DEV IP/MASC ]"
+              echo "Normalmente 0.0.0.0/0"
               exit 1
             fi
 
             RESULTAT=$(grep -v ";$2;" "/usr/local/JSBach/conf/bridge.conf")
+            echo "Archivo bridge.conf modificado"
             echo "$RESULTAT" > "/usr/local/JSBach/conf/bridge.conf"
             echo "$1;$2;$3;$4;" >> "/usr/local/JSBach/conf/bridge.conf"
           ;;
+
+          bridge_if)
+            # Espera: NOMBRE_IF ; VLAN_UNTAG ; VLAN_TAG
+            if [ -z "$1" ]; then
+              echo "Falta: [Nombre de interfaz]"
+              exit 1
+            fi
+            if [ -z "$2" ]; then
+              echo "Falta: [VLAN untag]"
+              exit 1
+            fi
+            if [ -z c"$3" ]; then
+              echo "Falta: [VLAN TAG]"
+              exit 1
+            fi
+    # VLAN_TAG puede ir vacío
+
+    NIF=$1
+    UNT=$2
+    TAG=$3
+
+    RESULTAT=$(grep -v "^$NIF;" "/usr/local/JSBach/conf/bridge_if.conf")
+    echo "$RESULTAT" > "/usr/local/JSBach/conf/bridge_if.conf"
+    echo "$NIF;$UNT;$TAG" >> "/usr/local/JSBach/conf/bridge_if.conf"
+  ;;
+
           
-          #bridge no estoy seguro si esta bien, creo que esta mal.
+          #bridge esta mal, falta por hacer.
           bridge)
             # Espera: nombre ; VLANID ; IP_DISPOSITIVO
             if [ -z "$1" ]; then
