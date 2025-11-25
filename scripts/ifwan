@@ -16,7 +16,6 @@ fnc_autor(){
  echo "###############################################"
 }
 
-
 fnc_parar(){
     echo $IFW_MODE
     case "$IFW_MODE" in

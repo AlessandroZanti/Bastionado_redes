@@ -24,6 +24,7 @@ fnc_iniciar(){
         VLAN_UNTAG=$(echo "$LINIA" | cut -d ';' -f2)
         VLAN_TAG=$(echo "$LINIA" | cut -d ';' -f3)
         ip l s dev $NOMBRE_IF master br0
+	ip l s dev $NOMBRE_IF up
         bridge vlan del dev $NOMBRE_IF vid 1 pvid untagged
         #bridge vlan del dev $NOMBRE_IF type vlan id $VLANID
         if [ ! -z $VLAN_UNTAG ]; then
@@ -40,8 +41,10 @@ fnc_iniciar(){
 }
 
 fnc_parar(){
-    echo "parar"
+    echo "Parando"
     ip l d dev br0
+    ./bridge estado
+    ip a l
 }
 
 fnc_configurar(){
