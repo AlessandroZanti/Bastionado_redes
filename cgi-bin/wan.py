@@ -17,6 +17,7 @@ def render(params, interfaces):
     elif action == "parar":
         cmd_sent = "ifwan parar"
     elif action == "configurar" and iface:
+        cmd_sent = "interfaces listar"
         cmd_sent = f"ifwan configurar {mode} {iface}"
 
     if cmd_sent:

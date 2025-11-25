@@ -6,11 +6,12 @@ def render(params):
     cli_output = ""
     cmd_sent = ""
 
-    if action in ("iniciar", "parar", "estado"):
+    if action in ("iniciar", "parar", "estado", "configurar"):
         cmd_sent = f"enrutar {action}"
         cli_output = send_to_srv_cli(cmd_sent)
 
     return f"""
+
 <div class='panel'>
   <h1>Routing</h1>
 
@@ -19,7 +20,21 @@ def render(params):
       <button name="action" value="iniciar">On</button>
       <button name="action" value="parar">Off</button>
       <button name="action" value="estado">Status</button>
+      <button name="action" value="configurar">Configure</button>
   </form>
+
+  {"""
+  <div class="sep"></div>
+  <form method="post">
+      <input type="hidden" name="menu" value="enrutar">
+      <input type="hidden" name="action" value="configurar">
+
+      Interface:
+      <select name="iface">{iface_opts}</select>
+
+      <button type="submit">Apply</button>
+  </form>
+  """ if action == "configurar" else ""}
 
   {f"""
   <div class='sep'></div>
