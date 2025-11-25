@@ -91,7 +91,6 @@ fnc_configurar(){
             fi
             if [ -z "$4" ]; then
               echo "Falta [ DEV IP/MASC ]"
-              echo "Normalmente 0.0.0.0/0"
               exit 1
             fi
 
