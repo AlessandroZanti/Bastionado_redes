@@ -1,0 +1,4 @@
+echo "Mostrando VLANs..."
+echo ""
+bridge vlan show
+echo ""

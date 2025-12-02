@@ -3,7 +3,7 @@ import sys, os, re, html
 sys.path.append("/usr/local/JSBach/cgi-bin")
 
 from logic import get_params, send_to_srv_cli, parse_interfaces
-import wan, enrutar, bridge
+import wan, enrutar, bridge, cortafuegos
 
 # --------------------------
 # Params
@@ -24,6 +24,8 @@ elif menu == "enrutar":
     content = enrutar.render(params)
 elif menu == "bridge":
     content = bridge.render(params)
+elif menu == "cortafuegos":
+    content = cortafuegos.render(params)
 else:
     content = "<h2>Error: menú desconocido</h2>"
 
@@ -171,6 +173,7 @@ document.addEventListener('click', function(e){{
   <a href="?menu=wan" class="{{ 'active' if menu=='wan' else '' }}">WAN</a>
   <a href="?menu=enrutar" class="{{ 'active' if menu=='enrutar' else '' }}">Routing</a>
   <a href="?menu=bridge" class="{{ 'active' if menu=='bridge' else '' }}">Bridge</a>
+  <a href="?menu=cortafuegos" class="{{ 'active' if menu=='cortafuegos' else '' }}">Cortafuegos</a>
 </div>
 
 <div class="main">
