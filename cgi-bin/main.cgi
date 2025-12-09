@@ -30,7 +30,7 @@ else:
     content = "<h2>Error: menú desconocido</h2>"
 
 # --------------------------
-# HTML completo
+# HTML completo con estilo modernizado
 # --------------------------
 print("Content-Type: text/html; charset=utf-8\n")
 print(f"""
@@ -44,34 +44,41 @@ print(f"""
 /* Layout general */
 body {{
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0f1113;
-    color: #e6eef0;
+    font-family: 'Inter', Arial, sans-serif;
+    background: #0c0d0f;
+    color: #e8eef2;
 }}
+
+/* Smooth fade-in */
+body {{ opacity: 0; animation: fadeIn 0.4s ease-out forwards; }}
+@keyframes fadeIn {{ from {{ opacity:0 }} to {{ opacity:1 }} }}
 
 /* Botón hamburguesa */
 .menu-btn {{
     position: fixed;
-    top: 12px;
-    left: 14px;
-    font-size: 28px;
+    top: 16px;
+    left: 18px;
+    font-size: 30px;
     cursor: pointer;
-    color: #00bfff;
+    color: #4dc0ff;
     z-index: 999;
     user-select: none;
+    transition: transform 0.15s;
 }}
+.menu-btn:hover {{ transform: scale(1.06); }}
 
 /* Sidebar */
 .sidebar {{
     position: fixed;
-    left: -240px;
+    left: -250px;
     top: 0;
-    width: 220px;
+    width: 240px;
     height: 100%;
-    background: #131416;
+    background: #141519;
+    backdrop-filter: blur(6px);
     transition: left 0.28s ease;
-    padding-top: 64px;
-    box-shadow: 2px 0 8px rgba(0,0,0,0.6);
+    padding-top: 70px;
+    box-shadow: 3px 0 10px rgba(0,0,0,0.55);
     z-index: 900;
 }}
 .sidebar.show {{ left: 0; }}
@@ -79,73 +86,76 @@ body {{
 /* Links del sidebar */
 .sidebar a {{
     display: block;
-    color: #cfd8da;
-    padding: 14px 18px;
+    color: #cdd6da;
+    padding: 14px 20px;
     text-decoration: none;
-    border-radius: 8px;
-    margin: 6px 10px;
-    transition: background 0.18s, color 0.18s;
+    border-radius: 10px;
+    margin: 6px 12px;
+    font-weight: 500;
+    background: rgba(255,255,255,0.02);
+    transition: background 0.18s, color 0.18s, transform 0.12s;
 }}
-.sidebar a:hover {{ background: #00bfff; color: #001219; }}
-.sidebar a.active {{ background: #00bfff; color: #001219; }}
+.sidebar a:hover {{ background: #4dc0ff; color: #001217; transform: translateX(4px); }}
+.sidebar a.active {{ background: #4dc0ff; color: #001217; }}
 
-/* Contenido principal */
+/* Contenido */
 .main {{
-    padding: 60px 20px;
+    padding: 70px 26px;
     transition: margin-left 0.28s;
     margin-left: 20px;
 }}
-
-/* Al abrir sidebar */
-.sidebar.show ~ .main {{
-    margin-left: 240px;
-}}
+.sidebar.show ~ .main {{ margin-left: 260px; }}
 
 /* Paneles */
 .panel {{
-    background: #171819;
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.45);
+    background: linear-gradient(135deg, #16171a, #1b1d21);
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.04);
 }}
 
 /* Botones */
 button {{
-    background: linear-gradient(#222, #1a1a1a);
-    border: 1px solid rgba(255,255,255,0.06);
-    padding: 10px 14px;
-    border-radius: 10px;
+    background: linear-gradient(135deg, #1c1d21, #17181b);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 11px 16px;
+    border-radius: 12px;
     color: #e6eef0;
     cursor: pointer;
-    transition: background 0.18s, transform 0.06s, box-shadow 0.12s;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    font-weight: 500;
+    transition: background 0.18s, transform 0.1s, box-shadow 0.12s;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.45);
 }}
 button:hover {{
-    background: #00bfff;
+    background: #4dc0ff;
     color: #001219;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
 }}
 button:active {{ transform: translateY(0); }}
-button:focus {{ outline: none; box-shadow: 0 0 0 3px rgba(0,191,255,0.12); }}
+button:focus {{ outline: none; box-shadow: 0 0 0 3px rgba(77,192,255,0.25); }}
 
 /* Inputs y selects */
 select, input {{
-    background: #0f1112;
+    background: #111315;
     color: #e6eef0;
-    border: 1px solid #2a2a2a;
-    padding: 8px;
-    border-radius: 8px;
+    border: 1px solid #26282b;
+    padding: 10px;
+    border-radius: 10px;
+    transition: border 0.15s;
 }}
+select:focus, input:focus {{ border-color: #4dc0ff; }}
 
 /* Separadores y pre */
-.sep {{ height: 1px; background: #202427; margin: 18px 0; border-radius:4px; }}
+.sep {{ height: 1px; background: #23272a; margin: 22px 0; border-radius:4px; }}
 pre {{
-    background: #020403;
-    color: #8fffb3;
-    padding: 12px;
-    border-radius: 8px;
+    background: #050607;
+    color: #90ffbd;
+    padding: 14px;
+    border-radius: 10px;
     white-space: pre-wrap;
     overflow-x: auto;
+    border: 1px solid rgba(255,255,255,0.06);
 }}
 </style>
 
@@ -157,9 +167,7 @@ function toggleMenu() {{
 document.addEventListener('click', function(e){{
     const sidebar = document.querySelector('.sidebar');
     if (!sidebar) return;
-    if (e.target.closest('.sidebar a')) {{
-        sidebar.classList.remove('show');
-    }}
+    if (e.target.closest('.sidebar a')) {{ sidebar.classList.remove('show'); }}
 }});
 </script>
 

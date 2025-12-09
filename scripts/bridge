@@ -58,7 +58,8 @@ fnc_configurar(){
 
     case "$ARG_1" in
       mostrar)
-        if [ "$1" == "vlan" ]; then 
+	echo "Mostrando: "   
+     if [ "$1" == "vlan" ]; then 
           cat "/usr/local/JSBach/conf/bridge.conf" | grep -v '^#'
         fi
         if [ "$1" == "vlan" ]; then
