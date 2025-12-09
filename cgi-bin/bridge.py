@@ -82,7 +82,7 @@ def render(params):
     html_main = f"""
     <div class='panel'>
         <h1>Bridge</h1>
-
+        <div style="margin:40px 0;"></div>
         <!-- BOTONES PRINCIPALES -->
         <form method="post">
             {hidden(menu="bridge")}
@@ -107,19 +107,22 @@ def render(params):
                 {button("mode", "guardar", "Save")}
                 {button("mode", "borrar", "Delete")}
             </div>
+            <div style="margin:10px 0;">
         """
         if mode == "guardar":
             html_main += f"""
-            <div style="margin-top: 15px;">
+            <div class="sep"></div>
+            <div style="margin-top: 10px;">
                 {hidden(mode="guardar")}
                 {button("subtype", "vlan", "VLAN")}
                 {button("subtype", "bridge", "Bridge")}
                 {button("subtype", "bridge_if", "Bridge IF")}
             </div>
             """
+            
             if subtype == "vlan":
                 html_main += f"""
-            <div style="margin-top:15px; border:1px solid #444; padding:10px; display:flex; gap:10px; flex-wrap:wrap;">
+            <div style="margin-top:10px; border:1px solid #444; padding:10px; display:flex; gap:10px; flex-wrap:wrap;">
 
                 {hidden(mode="guardar", subtype="vlan")}
 
@@ -141,7 +144,8 @@ def render(params):
             
         if mode == "borrar":
             html_main += f"""
-            <div style="margin-top: 15px;">
+            <div class="sep"></div>
+            <div style="margin-top: 10px;">
                 {hidden(mode="borrar")}
                 {button("subtype", "vlan", "VLAN")}
                 {button("subtype", "bridge", "Bridge")}
@@ -149,7 +153,7 @@ def render(params):
             """
             if subtype == "vlan":
                 html_main += f"""
-            <div style="margin-top:15px; border:1px solid #444; padding:10px; display:flex; gap:10px; flex-wrap:wrap;">
+            <div style="margin-top:10px; border:1px solid #444; padding:10px; display:flex; gap:10px; flex-wrap:wrap;">
 
                 {hidden(mode="borrar", subtype="vlan")}
 

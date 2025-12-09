@@ -44,8 +44,7 @@ print(f"""
 /* Layout general */
 body {{
     margin: 0;
-    font-family: 'Inter', Arial, sans-serif;
-    background: #0c0d0f;
+    background: #030617;
     color: #e8eef2;
 }}
 
@@ -74,7 +73,7 @@ body {{ opacity: 0; animation: fadeIn 0.4s ease-out forwards; }}
     top: 0;
     width: 240px;
     height: 100%;
-    background: #141519;
+    background: #02040b;
     backdrop-filter: blur(6px);
     transition: left 0.28s ease;
     padding-top: 70px;
@@ -95,8 +94,8 @@ body {{ opacity: 0; animation: fadeIn 0.4s ease-out forwards; }}
     background: rgba(255,255,255,0.02);
     transition: background 0.18s, color 0.18s, transform 0.12s;
 }}
-.sidebar a:hover {{ background: #4dc0ff; color: #001217; transform: translateX(4px); }}
-.sidebar a.active {{ background: #4dc0ff; color: #001217; }}
+.sidebar a:hover {{ background: #030617; color: #2030ff; transform: translateX(4px); }}
+.sidebar a.active {{ background: #030617; color: #2030ff; }}
 
 /* Contenido */
 .main {{
@@ -108,7 +107,7 @@ body {{ opacity: 0; animation: fadeIn 0.4s ease-out forwards; }}
 
 /* Paneles */
 .panel {{
-    background: linear-gradient(135deg, #16171a, #1b1d21);
+    background: linear-gradient(135deg, #02040b, #02040b);
     padding: 20px;
     border-radius: 14px;
     box-shadow: 0 8px 18px rgba(0,0,0,0.5);
@@ -120,7 +119,7 @@ button {{
     background: linear-gradient(135deg, #1c1d21, #17181b);
     border: 1px solid rgba(255,255,255,0.08);
     padding: 11px 16px;
-    border-radius: 12px;
+    border-radius: 8px;
     color: #e6eef0;
     cursor: pointer;
     font-weight: 500;
@@ -128,8 +127,8 @@ button {{
     box-shadow: 0 3px 8px rgba(0,0,0,0.45);
 }}
 button:hover {{
-    background: #4dc0ff;
-    color: #001219;
+    background: #030617;
+    color: #2030ff;
     transform: translateY(-2px);
 }}
 button:active {{ transform: translateY(0); }}
@@ -137,7 +136,7 @@ button:focus {{ outline: none; box-shadow: 0 0 0 3px rgba(77,192,255,0.25); }}
 
 /* Inputs y selects */
 select, input {{
-    background: #111315;
+    background: #02040b;
     color: #e6eef0;
     border: 1px solid #26282b;
     padding: 10px;
@@ -149,8 +148,8 @@ select:focus, input:focus {{ border-color: #4dc0ff; }}
 /* Separadores y pre */
 .sep {{ height: 1px; background: #23272a; margin: 22px 0; border-radius:4px; }}
 pre {{
-    background: #050607;
-    color: #90ffbd;
+    background: #000000;
+    color: #00ff00;
     padding: 14px;
     border-radius: 10px;
     white-space: pre-wrap;
