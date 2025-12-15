@@ -6,9 +6,18 @@ def render(params):
     cli_output = ""
     cmd_sent = ""
 
-    if action in ("iniciar", "parar", "estado", "configurar"):
+    if action in ("iniciar", "parar", "estado"):
         cmd_sent = f"enrutar {action}"
         cli_output = send_to_srv_cli(cmd_sent)
+    elif action == "configurar":
+        iface = params.get("iface", "").strip()
+        if iface:
+            cmd_sent = f"enrutar configurar {iface}"
+            cli_output = send_to_srv_cli(cmd_sent)
+    elif action == "interfaces":
+        cmd_sent = "interfaces listar"
+        cli_output = send_to_srv_cli(cmd_sent)
+
 
     return f"""
 
@@ -21,6 +30,7 @@ def render(params):
       <button name="action" value="parar">Off</button>
       <button name="action" value="estado">Status</button>
       <button name="action" value="configurar">Configure</button>
+      <button name="action" value="interfaces">Interfaces</button>
   </form>
 
   {"""
@@ -30,7 +40,7 @@ def render(params):
       <input type="hidden" name="action" value="configurar">
 
       Interface:
-      <select name="iface">{iface_opts}</select>
+      <input type="text" name="iface" value="" placeholder="Iface" style="width:70px;">
 
       <button type="submit">Apply</button>
   </form>
