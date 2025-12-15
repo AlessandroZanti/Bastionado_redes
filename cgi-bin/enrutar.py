@@ -23,6 +23,8 @@ def render(params):
 
 <div class='panel'>
   <h1>Routing</h1>
+  <div style="margin:40px 0;"></div>
+  <div class="sep"></div> 
 
   <form method="post">
       <input type="hidden" name="menu" value="enrutar">

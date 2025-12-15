@@ -83,6 +83,7 @@ def render(params):
     <div class='panel'>
         <h1>Bridge</h1>
         <div style="margin:40px 0;"></div>
+        <div class="sep"></div>
         <!-- BOTONES PRINCIPALES -->
         <form method="post">
             {hidden(menu="bridge")}
