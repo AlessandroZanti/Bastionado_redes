@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source /usr/local/JSBach/conf/interfaces.conf
-
 ##########################################################################
 ###  FUNCTIONS
 ##########################################################################
@@ -22,25 +20,25 @@ fnc_listar_tarjetas(){
     FECHA=$(date '+%Y-%m-%d %H:%M:%S')
     SALIDA="/usr/local/JSBach/conf/interfaces.conf"
 
-    # Creamos carpeta si no existe
-    mkdir -p /usr/local/JSBach/logs
+    mkdir -p /usr/local/JSBach/conf
 
-    echo "Listado de interfaces de red - $FECHA" > "$SALIDA"
-    echo "--------------------------------------" >> "$SALIDA"
+    {
+        echo "Listado de interfaces de red - $FECHA"
+        echo "--------------------------------------"
 
-    # Obtenemos los nombres de las interfaces
-    mapfile -t IFACES < <(ip -o link show | awk -F': ' '{print $2}')
+        mapfile -t IFACES < <(ip -o link show | awk -F': ' '{print $2}')
 
-    CONTADOR=1
-    for IFACE in "${IFACES[@]}"; do
-        printf "%2d - %s\n" "$CONTADOR" "$IFACE" >> "$SALIDA"
-        ((CONTADOR++))
-    done
+        CONTADOR=1
+        for IFACE in "${IFACES[@]}"; do
+            printf "%2d - %s\n" "$CONTADOR" "$IFACE"
+            ((CONTADOR++))
+        done
+    } > "$SALIDA"
 
-    echo " "
+    echo
     echo "Interfaces encontradas:"
     cat "$SALIDA"
-    echo " "
+    echo
     echo "Archivo guardado en: $SALIDA"
 }
 
@@ -48,7 +46,7 @@ fnc_listar_tarjetas(){
 ###  MAIN
 ##########################################################################
 
-MSG="[listar/autor]"
+MSG="[listar|autor]"
 
 if [ $# -lt 1 ]; then
     echo "$MSG"
@@ -60,13 +58,14 @@ shift
 
 case "$OPCION" in
     listar)
-        fnc_autor "$@"
-        fnc_listar_tarjetas "$@"
+        fnc_autor
+        fnc_listar_tarjetas
     ;;
     autor)
-        fnc_autor "$@"
+        fnc_autor
     ;;
     *)
         echo "$MSG"
+        exit 1
     ;;
 esac

@@ -177,10 +177,10 @@ document.addEventListener('click', function(e){{
 <div class="menu-btn" onclick="toggleMenu()">☰</div>
 
 <div class="sidebar">
-  <a href="?menu=wan" class="{{ 'active' if menu=='wan' else '' }}">WAN</a>
-  <a href="?menu=enrutar" class="{{ 'active' if menu=='enrutar' else '' }}">Routing</a>
-  <a href="?menu=bridge" class="{{ 'active' if menu=='bridge' else '' }}">Bridge</a>
-  <a href="?menu=cortafuegos" class="{{ 'active' if menu=='cortafuegos' else '' }}">Cortafuegos</a>
+    <a href="?menu=wan" class="{{ 'active' if menu=='wan' else '' }}">WAN</a>
+    <a href="?menu=enrutar" class="{{ 'active' if menu=='enrutar' else '' }}">Routing</a>
+    <a href="?menu=bridge" class="{{ 'active' if menu=='bridge' else '' }}">Bridge</a>
+    <a href="?menu=cortafuegos" class="{{ 'active' if menu=='cortafuegos' else '' }}">Cortafuegos</a>
 </div>
 
 <div class="main">

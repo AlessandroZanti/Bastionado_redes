@@ -122,7 +122,7 @@ def render(params):
             
             if subtype == "vlan":
                 html_main += f"""
-            <div style="margin-top:10px; border:1px solid #444; padding:10px; display:flex; gap:10px; flex-wrap:wrap;">
+            <div style="margin-top:20px; border:1px solid #444; padding:10px; display:flex; gap:10px; flex-wrap:wrap;">
 
                 {hidden(mode="guardar", subtype="vlan")}
 
