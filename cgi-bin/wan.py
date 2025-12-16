@@ -40,7 +40,7 @@ def render(params, interfaces):
     return f"""
 <div class='panel'>
     <h1>WAN</h1>
-    <div style="margin:40px 0;"></div>
+    <div style="margin:30px 0;"></div>
     <div class="sep"></div>
 
     <form method="post">

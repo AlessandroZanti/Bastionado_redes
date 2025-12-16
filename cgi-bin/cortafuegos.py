@@ -26,6 +26,8 @@ def render(params):
     return f"""
 <div class='panel'>
   <h1>Cortafuegos</h1>
+  <div style="margin:30px 0;"></div>
+  <div class="sep"></div>
 
   <form method="post">
       <input type="hidden" name="menu" value="cortafuegos">

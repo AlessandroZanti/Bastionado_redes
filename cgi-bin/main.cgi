@@ -3,13 +3,13 @@ import sys, os, re, html
 sys.path.append("/usr/local/JSBach/cgi-bin")
 
 from logic import get_params, send_to_srv_cli, parse_interfaces
-import wan, enrutar, bridge, cortafuegos
+import wan, enrutar, bridge, cortafuegos, inicio
 
 # --------------------------
 # Params
 # --------------------------
 params = get_params()
-menu   = params.get("menu", "wan")
+menu   = params.get("menu", "inicio")
 action = params.get("action", "")
 
 # Lista de interfaces WAN
@@ -18,7 +18,9 @@ interfaces = parse_interfaces(send_to_srv_cli("interfaces listar"))
 # --------------------------
 # Routing de secciones
 # --------------------------
-if menu == "wan":
+if menu == "inicio":
+    content = inicio.render(params)
+elif menu == "wan":
     content = wan.render(params, interfaces)
 elif menu == "enrutar":
     content = enrutar.render(params)
@@ -28,6 +30,7 @@ elif menu == "cortafuegos":
     content = cortafuegos.render(params)
 else:
     content = "<h2>Error: menú desconocido</h2>"
+
 
 # --------------------------
 # HTML completo con estilo modernizado
@@ -177,11 +180,13 @@ document.addEventListener('click', function(e){{
 <div class="menu-btn" onclick="toggleMenu()">☰</div>
 
 <div class="sidebar">
+    <a href="?menu=inicio" class="{{ 'active' if menu=='inicio' else '' }}">Inicio</a>
     <a href="?menu=wan" class="{{ 'active' if menu=='wan' else '' }}">WAN</a>
     <a href="?menu=enrutar" class="{{ 'active' if menu=='enrutar' else '' }}">Routing</a>
     <a href="?menu=bridge" class="{{ 'active' if menu=='bridge' else '' }}">Bridge</a>
     <a href="?menu=cortafuegos" class="{{ 'active' if menu=='cortafuegos' else '' }}">Cortafuegos</a>
 </div>
+
 
 <div class="main">
 {content}

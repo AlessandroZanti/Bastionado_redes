@@ -82,7 +82,7 @@ def render(params):
     html_main = f"""
     <div class='panel'>
         <h1>Bridge</h1>
-        <div style="margin:40px 0;"></div>
+        <div style="margin:30px 0;"></div>
         <div class="sep"></div>
         <!-- BOTONES PRINCIPALES -->
         <form method="post">
