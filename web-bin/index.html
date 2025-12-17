@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Network Control</title>
+
+<style>
+body {
+    margin: 0;
+    background: #030617;
+    color: #e8eef2;
+    opacity: 0;
+    animation: fadeIn 0.4s ease-out forwards;
+}
+@keyframes fadeIn {
+    from { opacity:0 }
+    to { opacity:1 }
+}
+.menu-btn {
+    position: fixed;
+    top:16px;
+    left:18px;
+    font-size:30px;
+    cursor:pointer;
+    color:#4dc0ff;
+    z-index:999;
+    user-select:none;
+}
+.sidebar {
+    position: fixed;
+    left:-250px;
+    top:0;
+    width:240px;
+    height:100%;
+    background:#02040b;
+    transition: left 0.28s ease;
+    padding-top:70px;
+    z-index:900;
+}
+.sidebar.show { left:0; }
+.sidebar a {
+    display:block;
+    color:#cdd6da;
+    padding:14px 20px;
+    text-decoration:none;
+    border-radius:10px;
+    margin:6px 12px;
+    background: rgba(255,255,255,0.02);
+}
+.sidebar a.active {
+    background:#030617;
+    color:#2030ff;
+}
+.main {
+    padding:70px 26px;
+    margin-left:20px;
+}
+.panel {
+    background:#02040b;
+    padding:20px;
+    border-radius:14px;
+}
+.sep {
+    height:1px;
+    background:#23272a;
+    margin:22px 0;
+}
+pre {
+    background:#000;
+    color:#0f0;
+    padding:14px;
+    border-radius:10px;
+}
+button {
+    background:#1c1d21;
+    border:1px solid #333;
+    padding:10px 14px;
+    border-radius:8px;
+    color:#e6eef0;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+<div class="sidebar" id="sidebar">
+    <a href="#" data-menu="inicio" class="active">Inicio</a>
+    <a href="#" data-menu="wan">WAN</a>
+    <a href="#" data-menu="enrutar">Routing</a>
+    <a href="#" data-menu="bridge">Bridge</a>
+    <a href="#" data-menu="cortafuegos">Cortafuegos</a>
+</div>
+
+<div class="main" id="main"></div>
+
+<script src="inicio.js"></script>
+<script>
+function toggleMenu() {
+    document.getElementById('sidebar').classList.toggle('show');
+}
+
+document.querySelectorAll('.sidebar a').forEach(a => {
+    a.onclick = e => {
+        e.preventDefault();
+        document.querySelectorAll('.sidebar a').forEach(x => x.classList.remove('active'));
+        a.classList.add('active');
+        loadMenu(a.dataset.menu);
+        document.getElementById('sidebar').classList.remove('show');
+    };
+});
+
+function loadMenu(menu) {
+    if (menu === 'inicio') {
+        renderInicio();
+    } else {
+        document.getElementById('main').innerHTML =
+            `<div class="panel"><h2>${menu}</h2><p>Pendiente de migrar</p></div>`;
+    }
+}
+
+loadMenu('inicio');
+</script>
+
+</body>
+</html>
